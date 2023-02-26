@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.button {
+    @apply flex justify-center items-center py-2 px-3 rounded-sm cursor-pointer;
+}
+
+.button-inactive {
+    @apply bg-gray-400 text-gray-700;
+}
+
+.nav-item {
+    @apply flex flex-row w-fit gap-2 text-sm
+    hover:text-secondary;
+}
+
+.input-group {
+    @apply flex flex-col w-full flex-1 gap-1
+}
+
+.input {
+    @apply border rounded-md py-2 px-2
+}
+
