@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'window' : 'url(/images/window-image.png)'
+      },
       colors: {
         'primary' : '#082144',
         'secondary' : '#01C386'

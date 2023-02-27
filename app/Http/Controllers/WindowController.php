@@ -33,10 +33,11 @@ class WindowController extends Controller
     {
         $formFields = $request->validate([
             'number' => ['required', Rule::unique('windows', 'number')],
-            'purpose' => '',
+            'purpose' => 'required',
         ]); 
 
         $formFields['office_id'] = $office_id;
+        $formFields['purpose'] = strtolower($formFields['purpose']);
 
         Window::create($formFields);
 

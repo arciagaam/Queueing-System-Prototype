@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('office_id')->constrained('offices')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('purpose');
             $table->integer('number');
             $table->string('code');
             $table->tinyInteger('status')->default(0);

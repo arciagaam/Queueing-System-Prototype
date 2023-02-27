@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('windows', function (Blueprint $table) {
+        Schema::create('monitors', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->foreignId('office_id')->constrained('offices')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('queue_id')->default(null)->nullable();
-            $table->string('number');
-            $table->string('purpose');
-            $table->tinyInteger('status')->default(0);
+            $table->integer('template'); //1 office, 2 general, 3 purpose layout
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('windows');
+        Schema::dropIfExists('monitors');
     }
 };

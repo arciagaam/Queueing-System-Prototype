@@ -56,6 +56,15 @@ Route::get('/users', [ManageUserController::class, 'index'])->middleware('auth')
 
 // SCREEN ROUTES
 Route::get('/screens', [ScreenController::class, 'index'])->middleware('auth');
+Route::get('/screens/edit', [ScreenController::class, 'edit'])->middleware('auth');
+Route::post('/screens/edit', [ScreenController::class, 'update'])->middleware('auth');
+Route::post('/screens/delete', [ScreenController::class, 'delete'])->middleware('auth');
+
+Route::get('/screens/new/step-one', [ScreenController::class, 'createStepOne'])->middleware('auth');
+Route::post('/screens/new/step-one', [ScreenController::class, 'postStepOne'])->middleware('auth');
+
+Route::get('/screens/new/step-two', [ScreenController::class, 'createStepTwo'])->middleware('auth');
+Route::post('/screens/new/step-two', [ScreenController::class, 'postStepTwo'])->middleware('auth');
 
 // LOGS ROUTES
 Route::get('/logs', [ScreenController::class, 'index'])->middleware('auth');
@@ -70,3 +79,6 @@ Route::get('/queueing/step-two', [KioskController::class, 'createStepTwo'])->mid
 Route::post('/queueing/step-two', [KioskController::class, 'postStepTwo'])->middleware('auth');
 
 Route::get('/queueing/step-three', [KioskController::class, 'createStepThree'])->middleware('auth');
+
+// DISPLAY MONITOR ROUTES
+Route::get('/monitor/display/{id}', [ScreenController::class, 'display'])->middleware('auth');

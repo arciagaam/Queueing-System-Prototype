@@ -39,11 +39,17 @@ class QueueController extends Controller
         return '0001';
     }
 
-    public function api($officeId)
+    public function api($officeId, $windowId)
     {
+        $purpose = DB::table('windows')
+        ->where('id', '=', $windowId)
+        ->select('purpose')
+        ->first();
+
         $queues = DB::table('queues')
         ->where('office_id', '=', $officeId)
         ->where('queues.created_at', 'like', '%'.now()->toDateString('Y-m-d').'%')
+        ->where('queues.purpose' , '=', $purpose->purpose)
         ->join('offices', 'offices.id', '=', 'queues.office_id')
         ->select(['queues.*', 'offices.name as office'])
         ->orderBy('number', 'desc')
@@ -66,8 +72,10 @@ class QueueController extends Controller
 
     public function index()
     {
+        
         $queues = DB::table('queues')
         ->where('office_id', '=', $this->office->id)
+        ->where('queues.purpose' , '=', $this->window->purpose)
         ->where('queues.created_at', 'like', '%'.now()->toDateString('Y-m-d').'%')
         ->join('offices', 'offices.id', '=', 'queues.office_id')
         ->select(['queues.*', 'offices.name as office'])
@@ -124,63 +132,73 @@ class QueueController extends Controller
             $windowId = $request->windowId;
             $officeId = $request->officeId;
 
+            $purpose = DB::table('windows')
+            ->where('id', '=', $windowId)
+            ->select('purpose')
+            ->first();
+
             $current = DB::table('queues')
             ->where('office_id', '=', $officeId)
+            ->where('queues.purpose' , '=', $purpose->purpose)
             ->where('queues.created_at', 'like', '%'.now()->toDateString('Y-m-d').'%')
             ->where('status', '=', '0')
             ->join('offices', 'offices.id', '=', 'queues.office_id')
             ->select(['queues.*', 'offices.name as office'])
             ->orderBy('queues.created_at', 'asc')
             ->first();
+
+            if($request->payload['next'] != 0){
+                $selectedOfficeId = $request->payload['selectedOffice'];
+                $selectedWindowId = $request->payload['selectedWindow'];
+
+                if($selectedOfficeId != 'null' || $selectedWindowId != 'null'){
+                    $window = DB::table('windows')
+                    ->where('windows.id', '=', $windowId)
+                    ->join('queues', 'queues.id', '=', 'windows.queue_id')
+                    ->select('queues.code as queue_code')
+                    ->first();
+                    
+                    $queue = DB::table('queues')
+                    ->where('office_id', '=', $selectedOfficeId)
+                    ->where('created_at', 'like', '%'.now()->toDateString('Y-m-d').'%')
+                    ->orderBy('number', 'desc')
+                    ->first();
+
+                    $purpose = DB::table('windows')
+                    ->where('id', '=', $selectedWindowId)
+                    ->select('purpose')
+                    ->first();
+
+
+                    $queueNumber = (int) $this->checkQueue($queue);
+                    
+                    Queue::create(['office_id' => $selectedOfficeId, 'number' => $queueNumber, 'code' => $window->queue_code, 'purpose' => $purpose->purpose]);       
+                }
+            }
             
             if(isset($current)) {
 
-                if($request->payload['next'] != 0){
-                    $selectedOfficeId = $request->payload['selectedOffice'];
-                    $selectedWindowId = $request->payload['selectedWindow'];
 
-                    if($selectedOfficeId != 'null' || $selectedWindowId != 'null'){
-                        $window = DB::table('windows')
-                        ->where('windows.id', '=', $windowId)
-                        ->join('queues', 'queues.id', '=', 'windows.queue_id')
-                        ->select('queues.code as queue_code')
-                        ->first();
-                        
-                        $queue = DB::table('queues')
-                        ->where('office_id', '=', $selectedOfficeId)
-                        ->where('created_at', 'like', '%'.now()->toDateString('Y-m-d').'%')
-                        ->orderBy('number', 'desc')
-                        ->first();
-
-                        $queueNumber = (int) $this->checkQueue($queue);
-                    
-                        Queue::create(['office_id' => $selectedOfficeId, 'number' => $queueNumber, 'code' => $window->queue_code]);       
-                    }
-
-                    if($request->payload['next'] == 1){
-                        $windowId = $request->windowId;
-                        DB::table('windows')->where('id', '=', $windowId)->update(['status' => 0, 'queue_id' => null]);
-                    }
-                }
-
-                if($request->payload['next'] != 1){
-                    DB::table('windows')
-                    ->where('id', '=', $windowId)
-                    ->update(['queue_id' => $current->id]);
-        
-                    DB::table('queues')
-                    ->where('id', '=', $current->id)
-                    ->update(['status' => 1]);
-        
-                    Call::create(['queue_id' => $current->id, 'window_id' => $windowId]);
-                }
-
+                DB::table('windows')
+                ->where('id', '=', $windowId)
+                ->update(['queue_id' => $current->id]);
     
+                DB::table('queues')
+                ->where('id', '=', $current->id)
+                ->update(['status' => 1]);
+    
+                Call::create(['queue_id' => $current->id, 'window_id' => $windowId]);
+                
                 $data=[
                     'status' => 'success',
                     'data' => $current
                 ];
             } else {
+                
+                DB::table('windows')
+                ->where('id', '=', $windowId)
+                ->update(['queue_id' => null]);
+
                 $data = [
                     'status' => 'No queue left',
                 ];

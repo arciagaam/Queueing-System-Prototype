@@ -23,4 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/queue/{office_id}/{window_id}', [QueueController::class, 'api']);
 Route::post('/office_window/{office_id}/{window_id}', [QueueController::class, 'getOfficeWindow']);
-Route::post('/windows/{id}', [QueueController::class, 'windows']);
+Route::post('/windows/{office_id}', [QueueController::class, 'windows']);

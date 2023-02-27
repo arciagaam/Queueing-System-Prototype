@@ -8,7 +8,7 @@
         </div>
 
         <div class="input-group">
-            <label class="flex gap-1" for="purpose">Window Purpose</label>
+            <label class="flex gap-1" for="purpose">Window Purpose<p class="text-small text-red-400">*</p></label>
             <input type="text" id="purpose" name="purpose" placeholder="Enter purpose" class="input">
         </div>
 

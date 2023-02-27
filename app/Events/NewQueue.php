@@ -16,7 +16,6 @@ class NewQueue implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $queue;
 
-
     public function __construct(Queue $queue)
     {
         $this->queue = $queue;

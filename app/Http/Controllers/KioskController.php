@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class KioskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $request->session()->forget('new_queue');
         return view('pages.user.home');
     }
 
@@ -55,28 +56,56 @@ class KioskController extends Controller
         ->orderBy('number', 'desc')
         ->first();
 
-
         $queueNumber = $this->checkQueue($queue);
 
         $formFields['number'] = (int)$queueNumber; 
         $formFields['code'] = $office->prefix . '_' . $queueNumber;
         
-        $request->session()->put('queue_details', $formFields);
+        if (empty($request->session()->get('new_queue'))) {
+            $newQueue = new Queue();
+            $newQueue->fill($formFields);
+            $request->session()->put('new_queue', $newQueue);
+        } else {
+            $newQueue = $request->session()->get('new_queue');
+            $newQueue->fill($formFields);
+            $request->session()->put('new_queue', $newQueue);
+        }
 
-        Queue::create($formFields);
 
         return redirect('/queueing/step-two');
     }
 
     public function createStepTwo(Request $request)
     {
-        return view('pages.user.step_two');
+        $newQueue = $request->session()->get('new_queue');
 
+        $purposes = DB::table('windows')
+        ->where('office_id', '=', $newQueue->office_id)
+        ->select('purpose')
+        ->get();
+
+        return view('pages.user.step_two', ['new_queue' => $newQueue, 'purposes' => $purposes]);
     }
 
     public function postStepTwo(Request $request)
     {
+        $formFields = $request->validate([
+            'purpose' => 'required'
+        ]);
 
+        $newQueue = $request->session()->get('new_queue');
+        $newQueue->fill($formFields);
+        $request->session()->put('new_queue', $newQueue);
+        $newQueue->save();
+        
+        return redirect('/queueing/step-three');
+    }
+
+    public function createStepThree(Request $request)
+    {
+        $request->session()->forget('new_queue');
+        return view('pages.user.step_three');
+        
     }
 
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\NewQueue;
+use App\Events\UpdateQueue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,7 @@ class Queue extends Model
         'office_id',
         'number',
         'code',
+        'purpose'
     ];
 
     public static function booted()
@@ -25,7 +27,7 @@ class Queue extends Model
         });
 
         static::updated(function ($queue) {
-            NewQueue::dispatch($queue);
+            UpdateQueue::dispatch($queue);
         });
     }
 }

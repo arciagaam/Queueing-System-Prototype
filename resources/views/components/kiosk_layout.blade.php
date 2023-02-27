@@ -10,13 +10,13 @@
 </head>
 <body>
 
-    <div class="flex flex-row w-full min-h-screen">
+    <div class="flex flex-row w-full min-h-screen text-primary">
 
-        <div class="flex bg-red-300 min-w-[40%]">
-            
+        <div class="flex justify-center items-center bg-primary min-w-[40%]">
+            <img src="/images/logo.png" class="w-[300px]" alt="">
         </div>
     
-        <div class="flex flex-1 flex-col bg-white justify-start items-center py-40 px-10 gap-10">
+        <div class="flex flex-1 flex-col bg-white justify-center items-center py-40 px-10 gap-10">
     
             <div class="flex flex-row gap-2">
                 <p>1</p>

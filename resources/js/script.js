@@ -40,7 +40,7 @@ const updateTable = () => {
                 }
 
                 const serve = document.createElement('td');
-                serve.classList.add('p-2', 'px-3');
+                serve.classList.add('p-2', 'px-3', 'text-center');
                 serve.innerText = 'Serve';
 
                 tr.append(code);
@@ -97,6 +97,7 @@ document.querySelector('#next').addEventListener('click', async (e) => {
 
 document.querySelector('#office_id').addEventListener('change', () => {
     const selectedOffice = document.querySelector('#office_id');
+
     fetch(`http://${window.location.hostname}:${8000}/api/windows/${selectedOffice.value}`, {
         method: 'POST',
         headers: {
@@ -139,25 +140,11 @@ document.addEventListener('click', (e) => {
     e.stopPropagation();
 })
 
-document.querySelector('#mcc').addEventListener('click', async () => {
-    const selectedOffice = document.querySelector('#office_id').value;
-    const selectedWindow = document.querySelector('#window_id').value;
-    const response = await updateWindow('next', {selectedOffice:selectedOffice, selectedWindow:selectedWindow, next:1});
-
-    if(response.status != 'success'){
-        alert(response.status);
-    }
-
-    document.querySelector('#next_modal').classList.toggle('hidden');
-    window.location.reload();
-})
-
 document.querySelector('#mnq').addEventListener('click', async () => {
     const selectedOffice = document.querySelector('#office_id').value;
     const selectedWindow = document.querySelector('#window_id').value;
 
-    const response = await updateWindow('next', {selectedOffice:selectedOffice, selectedWindow:selectedWindow, next:2});
-    updateTable();
+    const response = await updateWindow('next', {selectedOffice:selectedOffice, selectedWindow:selectedWindow, next:1});
 
     if(response.status != 'success'){
         alert(response.status);
@@ -165,6 +152,7 @@ document.querySelector('#mnq').addEventListener('click', async () => {
     
     document.querySelector('#next_modal').classList.toggle('hidden');
     document.querySelector('#queue_number').innerText = response?.data?.code || 'None';
+    window.location.reload();
 })
 
 

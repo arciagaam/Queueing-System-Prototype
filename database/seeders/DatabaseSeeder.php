@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('queues')->insert([
-            ['office_id' => '1', 'number' => '1', 'code' => 'O1_0001'],
+            ['office_id' => '1', 'number' => '1', 'code' => 'O1_0001', 'purpose' => 'payments'],
         ]);
     }
 }

@@ -77,7 +77,6 @@
                                 </div>
 
                                 <div class="flex flex-col whitespace-nowrap gap-2">
-                                    <button id="mcc" class="button bg-red-500 text-white px-5">Move and close counter</button>
                                     <button id="mnq" class="button bg-green-500 text-white px-5">Move and next queue</button>
                                 </div>
                             </div>
