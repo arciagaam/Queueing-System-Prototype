@@ -20,3 +20,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('queue', function ($user) {
     return $user->id;
 });
+
+Broadcast::channel('call', function ($user) {
+    return $user->id;
+});

@@ -5,7 +5,6 @@
 
 @vite('resources/js/app.js')
 @vite('resources/js/script.js')
-
 <x-layout>
         {{-- Breadcrumbs --}}
         <div class="flex flex-row gap-2 items-center">
@@ -13,11 +12,20 @@
             <p>></p>
             <p class="font-regular text-lg">{{$office->name}}</p>
             <p>></p>
+            @if ($window->use_name == 0)
             <p class="font-bold text-lg">Window {{$window->number}}</p>
+            @else
+            <p class="font-bold text-lg">{{$window->name ?? $window->number}}</p>
+
+            @endif
+        </div>
+        <div class="flex flex-row gap-2 items-center text-xs">
+            <input id="use-office-name" onclick="useOfficeName(this.checked)" type="checkbox" {{$window->use_name == 1 ? 'checked' : ''}}>
+            <label for="use-office-name">Use window name</label>
         </div>
 
-        <div class="flex flex-col h-full">
-            <div class="flex flex-row w-full h-full gap-2">
+        <div class="flex flex-col h-full flex-1">
+            <div class="flex flex-row w-full h-full flex-1 gap-2">
                 <div class="flex flex-col w-[65%]">
                     <table class="w-full shadow-md">
                         <thead>
@@ -88,3 +96,21 @@
 
         </div>
 </x-layout>
+
+<script>
+    const useOfficeName = async (value) => {
+        await fetch(`http://${window.location.hostname}:${8000}/offices/${officeId}/${windowId}/use-name`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    value: value ? 1 : 0,
+                })
+            })
+
+            window.location.reload();
+    };
+</script>

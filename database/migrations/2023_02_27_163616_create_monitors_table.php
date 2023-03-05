@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('office_id')->constrained('offices')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('template'); //1 office, 2 general, 3 purpose layout
+            $table->tinyInteger('content_type')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

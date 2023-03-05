@@ -11,25 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('windows', function (Blueprint $table) {
+        Schema::create('monitor_displays', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('office_id')->constrained('offices')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('queue_id')->default(null)->nullable();
-            $table->string('number');
-            $table->string('name')->default(null)->nullable();
-            $table->string('use_name')->default(0);
-            $table->string('purpose');
-            $table->tinyInteger('status')->default(0);
+            $table->foreignId('monitor_id')->constrained('monitors')->onUpdate('cascade')->onDelete('cascade');
+            $table->tinyInteger('type');
+            $table->string('file');
+            $table->tinyInteger('active')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
+    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('windows');
+        Schema::dropIfExists('monitor_displays');
     }
 };

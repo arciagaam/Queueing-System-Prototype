@@ -32,7 +32,8 @@ class WindowController extends Controller
     public function insert(Request $request, $office_id)
     {
         $formFields = $request->validate([
-            'number' => ['required', Rule::unique('windows', 'number')],
+            'number' => 'required',
+            'name' => '',
             'purpose' => 'required',
         ]); 
 
@@ -56,7 +57,8 @@ class WindowController extends Controller
     public function update(Request $request, $office_id, $window_id)
     {
         $formFields = $request->validate([
-            'number' => ['required', Rule::unique('windows', 'number')->ignore($window_id)],
+            'number' => 'required',
+            'name' => '',
             'purpose' => '',
         ]);
 
@@ -70,5 +72,14 @@ class WindowController extends Controller
     public function delete($id)
     {
         Window::destroy($id);
+    }
+
+    public function useName($officeId, $windowId, Request $request)
+    {
+        DB::table('windows')
+        ->where('id', '=', $windowId)
+        ->update(['use_name' => $request->value]);
+
+        echo json_encode(['response' => 'ok']);
     }
 }

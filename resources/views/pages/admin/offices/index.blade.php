@@ -9,7 +9,7 @@
             <div class="flex flex-col p-2 shadow-md rounded-md min-h-[220px] justify-between gap-5">
                 <a href="/offices/{{ $office->id }}">
                     <div class="bg-slate-100 min-h-[130px]">
-
+                        
                     </div>
 
                     <div class="flex flex-col">

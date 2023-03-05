@@ -30,19 +30,31 @@ class DatabaseSeeder extends Seeder
             ['username' => 'kiosk',
             'role'=> 2,
             'password' => Hash::make('password')]
-        
         ]);
 
         DB::table('offices')->insert([
-            ['name' => 'Office 1', 'prefix' => 'O1'],
-            ['name' => 'Office 2', 'prefix' => 'O2'],
-            ['name' => 'Office 3', 'prefix' => 'O3'],
-            ['name' => 'Office 4', 'prefix' => 'O4'],
-            ['name' => 'Office 5', 'prefix' => 'O5'],
+            ['name' => 'Treasurer\'s Office', 'prefix' => 'T'],
+            ['name' => 'Registrar', 'prefix' => 'R'],
+            ['name' => 'Assessor\'s Office', 'prefix' => 'A'],
+            ['name' => 'Mayor\'s Office', 'prefix' => 'M'],
+            ['name' => 'Vice Mayor\'s Office', 'prefix' => 'V'],
         ]);
 
-        DB::table('queues')->insert([
-            ['office_id' => '1', 'number' => '1', 'code' => 'O1_0001', 'purpose' => 'payments'],
+        DB::table('windows')->insert([
+            ['office_id' => 1, 'number' => '1', 'purpose' => 'cedula'],
+            ['office_id' => 1, 'number' => '2', 'purpose' => 'payments'],
+            ['office_id' => 1, 'number' => '3', 'purpose' => 'miscellaneous'],
+            ['office_id' => 2, 'number' => '1', 'purpose' => 'registrar'],
+            ['office_id' => 2, 'number' => '2', 'purpose' => 'registrar'],
+            ['office_id' => 3, 'number' => '1', 'purpose' => 'assessor'],
+            ['office_id' => 3, 'number' => '2', 'purpose' => 'assessor'],
+            ['office_id' => 3, 'number' => '3', 'purpose' => 'assessor'],
+
+
         ]);
+
+        // DB::table('queues')->insert([
+        //     ['office_id' => '1', 'number' => '1', 'code' => 'O1_0001', 'purpose' => 'payments'],
+        // ]);
     }
 }

@@ -59,7 +59,7 @@ class KioskController extends Controller
         $queueNumber = $this->checkQueue($queue);
 
         $formFields['number'] = (int)$queueNumber; 
-        $formFields['code'] = $office->prefix . '_' . $queueNumber;
+        $formFields['code'] = $office->prefix . $queueNumber;
         
         if (empty($request->session()->get('new_queue'))) {
             $newQueue = new Queue();

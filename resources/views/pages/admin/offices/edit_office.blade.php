@@ -6,6 +6,7 @@
             <label class="flex gap-1" for="name">Office Name <p class="text-small text-red-400">*</p></label>
             <input type="text" id="name" name="name" placeholder="Enter office name" class="input" value="{{$office->name}}">
         </div>
+        
 
         
         <div class="input-group">
@@ -23,3 +24,10 @@
         </div>
     </form>
 </x-layout>
+
+<script>
+    // FORCE PREFIX UPPERCASE
+    document.querySelector('#prefix').addEventListener('input', function(){
+        this.value = this.value.toUpperCase();
+    })
+</script>

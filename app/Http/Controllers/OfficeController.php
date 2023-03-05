@@ -64,4 +64,5 @@ class OfficeController extends Controller
     {
         Office::destroy($id);
     }
+
 }

@@ -21,7 +21,8 @@
                         <p class="font-bold text-md">Window {{$window->number}}</p>
                         <p class="font-regular text-sm">Status: {{$window->status == 0 ? 'Inactive' : 'Active'}}</p>
                     </div>
-
+                    <p class="font-bold text-xs">{{$window->name}}</p>
+                    
                     <p class="font-regular text-sm">Purpose: {{$window->purpose}}</p>
                 </div>
  

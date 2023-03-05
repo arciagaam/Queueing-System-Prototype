@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\KioskController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\OfficeController;
@@ -24,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [UserController::class, 'index'])->middleware('guest');
-Route::get('/login', [UserController::class, 'login'])->middleware('guest');
+Route::get('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/login', [UserController::class, 'authenticate'])->middleware('guest');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth');
 
@@ -45,6 +46,8 @@ Route::post('/offices/{office}/new', [WindowController::class, 'insert'])->middl
 Route::get('/offices/{office}/{window}/edit', [WindowController::class, 'edit'])->middleware('auth');
 Route::post('/offices/{office}/{window}/edit', [WindowController::class, 'update'])->middleware('auth');
 Route::post('/offices/{office}/{window}/delete', [WindowController::class, 'delete'])->middleware('auth');
+Route::post('/offices/{office}/{window}/use-name', [WindowController::class, 'useName'])->middleware('auth');
+
 
 //QUEUEING ROUTES
 Route::get('/offices/{office}/{window}', [QueueController::class, 'index']);
@@ -56,6 +59,10 @@ Route::get('/users', [ManageUserController::class, 'index'])->middleware('auth')
 
 // SCREEN ROUTES
 Route::get('/screens', [ScreenController::class, 'index'])->middleware('auth');
+Route::get('/screens/{id}', [ScreenController::class, 'show'])->middleware('auth');
+Route::get('/screens/{id}/new', [ScreenController::class, 'create'])->middleware('auth');
+Route::post('/screens/{id}/new', [ScreenController::class, 'insert'])->middleware('auth');
+
 Route::get('/screens/edit', [ScreenController::class, 'edit'])->middleware('auth');
 Route::post('/screens/edit', [ScreenController::class, 'update'])->middleware('auth');
 Route::post('/screens/delete', [ScreenController::class, 'delete'])->middleware('auth');
@@ -65,6 +72,9 @@ Route::post('/screens/new/step-one', [ScreenController::class, 'postStepOne'])->
 
 Route::get('/screens/new/step-two', [ScreenController::class, 'createStepTwo'])->middleware('auth');
 Route::post('/screens/new/step-two', [ScreenController::class, 'postStepTwo'])->middleware('auth');
+
+// CONTENT ROUTES
+Route::post('/content/update', [ContentController::class, 'update'])->middleware('auth');
 
 // LOGS ROUTES
 Route::get('/logs', [ScreenController::class, 'index'])->middleware('auth');
@@ -82,3 +92,6 @@ Route::get('/queueing/step-three', [KioskController::class, 'createStepThree'])-
 
 // DISPLAY MONITOR ROUTES
 Route::get('/monitor/display/{id}', [ScreenController::class, 'display'])->middleware('auth');
+Route::get('/monitor/queue/{id}', [ScreenController::class, 'fetchDisplay'])->middleware('auth');
+Route::post('/monitor/content-update', [ScreenController::class, 'updateContent'])->middleware('auth');
+Route::get('/monitor/contents/{id}', [ScreenController::class, 'getContents'])->middleware('auth');

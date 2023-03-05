@@ -12,6 +12,7 @@ class Window extends Model
     protected $fillable = [
         'office_id',
         'number',
-        'purpose'
+        'purpose',
+        'name'
     ];
 }

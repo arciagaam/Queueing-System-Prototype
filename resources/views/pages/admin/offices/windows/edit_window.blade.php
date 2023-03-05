@@ -5,11 +5,26 @@
         <div class="input-group">
             <label class="flex gap-1" for="number">Window Number<p class="text-small text-red-400">*</p></label>
             <input type="number" id="number" name="number" placeholder="Enter number" value="{{$window->number}}" class="input">
+            @error('number')
+            <div>{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="input-group">
+            <label class="flex gap-2 items-center" for="name">Window Name<p class="text-xs text-gray-400">optional
+                </p></label>
+            <input type="text" id="name" name="name" placeholder="Enter window name" class="input" value="{{$window->name}}">
+            @error('name')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="input-group">
             <label class="flex gap-1" for="purpose">Window Purpose</label>
             <input type="text" id="purpose" name="purpose" placeholder="Enter purpose" value="{{$window->purpose}}" class="input">
+            @error('purpose')
+                <div>{{ $message }}</div>
+            @enderror
         </div>
 
 

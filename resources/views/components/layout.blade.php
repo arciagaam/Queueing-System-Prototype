@@ -13,7 +13,7 @@
 
     <x-navbar/>
 
-    <div class="ml-[120px] flex flex-col min-h-screen h-screen bg-background py-5 sm:px-16 text-primary gap-5">
+    <div class="ml-[120px] flex flex-col min-h-screen bg-background py-5 sm:px-16 text-primary gap-5">
         {{ $slot }}
     </div>
     
